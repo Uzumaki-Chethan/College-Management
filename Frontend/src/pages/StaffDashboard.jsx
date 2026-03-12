@@ -83,7 +83,7 @@ export default function StaffDashboard() {
     const fetchComplaints = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/complaints/all", { headers });
+            const { data } = await axios.get("/api/complaints/all", { headers });
             const mine = (data.complaints || []).filter(
                 c => Array.isArray(c.assignedTo) && c.assignedTo.some(s => s._id === user?._id)
             );
@@ -95,7 +95,7 @@ export default function StaffDashboard() {
     const handleUpdateStatus = async (complaintId, status) => {
         setUpdating(complaintId);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/complaints/update",
+            await axios.post("/api/complaints/update",
                 { complaintId, status }, { headers });
             showToast(`Marked as ${status}!`, "success");
             fetchComplaints();
@@ -116,7 +116,7 @@ export default function StaffDashboard() {
         }
         setSavingPass(true);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/auth/update-password",
+            await axios.post("/api/auth/update-password",
                 { currentPassword: currentPass, newPassword: newPass }, { headers });
             setPassMsg({ text: "Password updated successfully!", type: "success" });
             setCurrentPass(""); setNewPass(""); setConfirmPass("");

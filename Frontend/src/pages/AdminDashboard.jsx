@@ -141,7 +141,7 @@ export default function AdminDashboard() {
 
     const fetchStats = async () => {
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/dashboard/stats", { headers });
+            const { data } = await axios.get("/api/dashboard/stats", { headers });
             setStats(data);
         } catch { }
         finally { setLoadingStats(false); }
@@ -150,7 +150,7 @@ export default function AdminDashboard() {
     const fetchComplaints = async () => {
         setLoadingComplaints(true);
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/complaints/all", { headers });
+            const { data } = await axios.get("/api/complaints/all", { headers });
             setComplaints(data.complaints || []);
         } catch { }
         finally { setLoadingComplaints(false); }
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
 
     const fetchStaff = async () => {
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/auth/staff-list", { headers });
+            const { data } = await axios.get("/api/auth/staff-list", { headers });
             setStaffList(data.staff || []);
         } catch { }
     };
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
     const fetchClaims = async () => {
         setLoadingClaims(true);
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/items/claims", { headers });
+            const { data } = await axios.get("/api/items/claims", { headers });
             setClaims(data || []);
         } catch { }
         finally { setLoadingClaims(false); }
@@ -188,7 +188,7 @@ export default function AdminDashboard() {
         if (staffIds.length === 0) { showToast("Please select at least one staff member.", "error"); return; }
         setAssigning(complaintId);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/complaints/assign", { complaintId, staffIds }, { headers });
+            await axios.post("/api/complaints/assign", { complaintId, staffIds }, { headers });
             showToast(`Assigned to ${staffIds.length} staff member${staffIds.length > 1 ? "s" : ""}!`, "success");
             setSelectedStaff(prev => ({ ...prev, [complaintId]: [] }));
             fetchComplaints();
@@ -200,7 +200,7 @@ export default function AdminDashboard() {
     const handleApproveClaim = async (claimId) => {
         setApprovingId(claimId);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/items/approve", { claimId }, { headers });
+            await axios.post("/api/items/approve", { claimId }, { headers });
             showToast("Claim approved! Item is now closed.", "success");
             fetchClaims();
             fetchStats();
@@ -215,7 +215,7 @@ export default function AdminDashboard() {
         }
         setSavingKeys(true);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/settings/update-keys", settings, { headers });
+            await axios.post("/api/settings/update-keys", settings, { headers });
             showToast("Secret keys updated successfully!", "success");
             setSettings({ staffKey: "", adminKey: "" });
         } catch (err) {
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
         }
         setSavingPass(true);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/auth/update-password",
+            await axios.post("/api/auth/update-password",
                 { currentPassword: currentPass, newPassword: newPass }, { headers });
             showToast("Password updated successfully!", "success");
             setCurrentPass(""); setNewPass(""); setConfirmPass("");
@@ -679,7 +679,7 @@ export default function AdminDashboard() {
                                                 <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
                                                     style={{ background: "#f8fafc", border: "1px solid #e2e8f0" }}>
                                                     {claim.itemId?.image ? (
-                                                        <img src={`${import.meta.env.VITE_API_URL}/uploads/${claim.itemId.image}`}
+                                                        <img src={`/uploads/${claim.itemId.image}`}
                                                             alt={claim.itemId?.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-2xl">📦</span>

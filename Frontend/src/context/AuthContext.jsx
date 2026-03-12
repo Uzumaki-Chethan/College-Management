@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+// Set base URL once — all axios calls use relative paths from here
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -17,7 +20,7 @@ useEffect(() => {
 
  const fetchProfile = async () => {
     try {
-        const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/auth/profile");
+        const { data } = await axios.get("/api/auth/profile");
         setUser(data);
     } catch (err) {
     if (err.response?.status !== 401) {
@@ -35,7 +38,7 @@ useEffect(() => {
 
   const login = async (email, password, role) => {
     const { data } = await axios.post(
-        "${import.meta.env.VITE_API_URL}/api/auth/login",
+        "/api/auth/login",
         { email, password, role }
     );
 
@@ -53,7 +56,7 @@ useEffect(() => {
 
   const signup = async (formData) => {
     const { data } = await axios.post(
-        "${import.meta.env.VITE_API_URL}/api/auth/signup",
+        "/api/auth/signup",
         formData
     );
 

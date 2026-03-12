@@ -49,14 +49,14 @@ export default function LostAndFoundPage() {
     const fetchItems = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/items/all", { headers });
+            const { data } = await axios.get("/api/items/all", { headers });
             const allItems = data.items || [];
             setItems(allItems);
 
             // Build myClaims map from items that have claims by this user
             // We fetch claims separately to know which ones user submitted
             try {
-                const claimsRes = await axios.get("${import.meta.env.VITE_API_URL}/api/items/my-claims", { headers });
+                const claimsRes = await axios.get("/api/items/my-claims", { headers });
                 const claimsMap = {};
                 (claimsRes.data.claims || []).forEach(c => {
                     if (c.status !== "Approved") {
@@ -91,7 +91,7 @@ export default function LostAndFoundPage() {
             fd.append("type", form.type);
             if (imageFile) fd.append("image", imageFile);
 
-            await axios.post("${import.meta.env.VITE_API_URL}/api/items/create", fd, {
+            await axios.post("/api/items/create", fd, {
                 headers: { ...headers, "Content-Type": "multipart/form-data" },
             });
 
@@ -108,7 +108,7 @@ export default function LostAndFoundPage() {
     const handleClaim = async (itemId) => {
         setClaimingId(itemId);
         try {
-            const { data } = await axios.post("${import.meta.env.VITE_API_URL}/api/items/claim", { itemId }, { headers });
+            const { data } = await axios.post("/api/items/claim", { itemId }, { headers });
             showToast("Claim submitted! Waiting for admin approval.", "success");
             // Store claim id so we can unclaim
             setMyClaims(prev => ({ ...prev, [itemId]: data.claim?._id || true }));
@@ -123,7 +123,7 @@ export default function LostAndFoundPage() {
         if (!claimId) return;
         setUnclaimingId(itemId);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/items/unclaim", { claimId }, { headers });
+            await axios.post("/api/items/unclaim", { claimId }, { headers });
             showToast("Claim withdrawn successfully.", "success");
             setMyClaims(prev => { const n = { ...prev }; delete n[itemId]; return n; });
             fetchItems();
@@ -341,7 +341,7 @@ export default function LostAndFoundPage() {
                                                 <div className="w-full h-40 flex items-center justify-center overflow-hidden"
                                                     style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
                                                     {item.image ? (
-                                                        <img src={`${import.meta.env.VITE_API_URL}/uploads/${item.image}`}
+                                                        <img src={`/uploads/${item.image}`}
                                                             alt={item.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-5xl opacity-30">📦</span>

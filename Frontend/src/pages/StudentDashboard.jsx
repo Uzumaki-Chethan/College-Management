@@ -77,7 +77,7 @@ export default function StudentDashboard() {
     const fetchComplaints = async () => {
         setLoadingData(true);
         try {
-            const { data } = await axios.get("${import.meta.env.VITE_API_URL}/api/complaints/my", { headers });
+            const { data } = await axios.get("/api/complaints/my", { headers });
             setComplaints(data.complaints || []);
         } catch { }
         finally { setLoadingData(false); }
@@ -95,7 +95,7 @@ export default function StudentDashboard() {
         }
         setSavingPass(true);
         try {
-            await axios.post("${import.meta.env.VITE_API_URL}/api/auth/update-password",
+            await axios.post("/api/auth/update-password",
                 { currentPassword: currentPass, newPassword: newPass }, { headers });
             setPassMsg({ text: "Password updated successfully!", type: "success" });
             setCurrentPass(""); setNewPass(""); setConfirmPass("");
