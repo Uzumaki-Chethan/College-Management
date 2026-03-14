@@ -341,7 +341,8 @@ export default function LostAndFoundPage() {
                                                 <div className="w-full h-40 flex items-center justify-center overflow-hidden"
                                                     style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
                                                     {item.image ? (
-                                                        <img src={`/uploads/${item.image}`}
+                                                        <img
+                                                            src={item.image?.startsWith("http") ? item.image : `/uploads/${item.image}`}
                                                             alt={item.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-5xl opacity-30">📦</span>
