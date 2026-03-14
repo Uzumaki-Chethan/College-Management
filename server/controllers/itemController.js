@@ -12,8 +12,8 @@ exports.createItem = async (req, res) => {
 
         const item = new LostItem({
     name, description, location, type,
-    image: req.file ? req.file.filename : null,
-    userId: req.user.id,   // ← make sure this line exists
+    image: req.file ? req.file.path : null,
+    userId: req.user.id,
 });
 
         await item.save();
