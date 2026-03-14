@@ -679,7 +679,8 @@ export default function AdminDashboard() {
                                                 <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
                                                     style={{ background: "#f8fafc", border: "1px solid #e2e8f0" }}>
                                                     {claim.itemId?.image ? (
-                                                        <img src={`/uploads/${claim.itemId.image}`}
+                                                        <img
+                                                            src={claim.itemId.image?.startsWith("http") ? claim.itemId.image : `/uploads/${claim.itemId.image}`}
                                                             alt={claim.itemId?.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-2xl">📦</span>
